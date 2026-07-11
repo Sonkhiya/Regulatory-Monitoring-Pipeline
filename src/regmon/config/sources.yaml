@@ -1,0 +1,75 @@
+# Regulatory source registry (plan.md §5.1)
+# Each entry maps to a crawler adapter (rbi, sebi, fda, eu_ai_act).
+# crawl_policy is a free-form dict passed to the adapter; common keys:
+#   - max_pages: max listing pages to crawl per run
+#   - max_items: max items to fetch per run
+#   - since_days: only fetch items published in last N days (default 7)
+#   - rate_limit: requests per minute per host (default: adapter default)
+sources:
+  # Reserve Bank of India
+  - id: rbi_notifications
+    jurisdiction: "RBI"
+    name: "RBI Notifications"
+    listing_url: "https://www.rbi.org.in/Scripts/NotificationUser.aspx"
+    adapter: "rbi"
+    crawl_policy:
+      max_pages: 3
+      max_items: 50
+      since_days: 7
+      rate_limit: 30
+
+  - id: rbi_press_releases
+    jurisdiction: "RBI"
+    name: "RBI Press Releases"
+    listing_url: "https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx"
+    adapter: "rbi"
+    crawl_policy:
+      max_pages: 3
+      max_items: 30
+      since_days: 7
+      rate_limit: 30
+
+  # Securities and Exchange Board of India
+  - id: sebi_circulars
+    jurisdiction: "SEBI"
+    name: "SEBI Legal Circulars"
+    listing_url: "https://www.sebi.gov.in/legal/circulars.html"
+    adapter: "sebi"
+    crawl_policy:
+      max_pages: 5
+      max_items: 50
+      since_days: 7
+      rate_limit: 30
+
+  # U.S. Food and Drug Administration
+  - id: fda_press_releases
+    jurisdiction: "FDA"
+    name: "FDA Press Releases"
+    feed_url: "https://www.fda.gov/about-fda/fda-press-releases/press-releases-rss"
+    adapter: "fda"
+    crawl_policy:
+      max_items: 50
+      since_days: 7
+      rate_limit: 60
+
+  - id: fda_federal_register
+    jurisdiction: "FDA"
+    name: "FDA Federal Register"
+    feed_url: "https://www.federalregister.gov/api/v1/articles.json?conditions%5Bpublication_date%5D%5Bgte%5D=2024-01-01&conditions%5Bagencies%5D%5B%5D=food-and-drug-administration&order=newest&per_page=50"
+    adapter: "fda"
+    crawl_policy:
+      max_items: 50
+      since_days: 7
+      rate_limit: 30
+
+  # EU AI Act
+  - id: eu_ai_act_newsroom
+    jurisdiction: "EU_AI_ACT"
+    name: "EU AI Act Newsroom"
+    listing_url: "https://artificial-intelligence-act.com/news/"
+    adapter: "eu_ai_act"
+    crawl_policy:
+      max_pages: 3
+      max_items: 30
+      since_days: 14
+      rate_limit: 20
