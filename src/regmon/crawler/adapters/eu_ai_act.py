@@ -11,6 +11,8 @@ from collections.abc import AsyncIterator
 from typing import ClassVar
 from urllib.parse import urljoin
 
+from bs4 import Tag
+
 from regmon.crawler.adapters.base import BaseAdapter
 from regmon.crawler.types import FetchResult, RemoteEntry
 
@@ -46,10 +48,13 @@ class EUAIActAdapter(BaseAdapter):
             # News articles in article cards
             for article in soup.select("article, .post, .news-item, .entry"):
                 link = article.find("a", href=True)
-                if not link:
+                if not link or not isinstance(link, Tag):
                     continue
 
-                url = urljoin(self.base_url, str(link["href"]))
+                href = link.get("href")
+                if not href:
+                    continue
+                url = urljoin(self.base_url, str(href))
                 title = link.get_text(strip=True)
 
                 # Try to find date

@@ -27,6 +27,12 @@ dependencies = [
   "pydantic-settings>=2.2",
   "sqlalchemy[asyncio]>=2.0",
   "aiosqlite>=0.19",
+  "httpx>=0.28",
+  "pyyaml>=6.0",
+  "tenacity>=8.2",
+  "beautifulsoup4>=4.12",
+  "feedparser>=6.0",
+  "lxml>=5.0",
 ]
 
 [project.optional-dependencies]
@@ -40,6 +46,7 @@ dev = [
   "pre-commit>=3.7",
   "build>=1.2",
   "types-PyYAML>=6.0",
+  "types-beautifulsoup4>=4.12",
 ]
 faiss = ["faiss-cpu>=1.8"]
 chroma = ["chromadb>=0.5"]
