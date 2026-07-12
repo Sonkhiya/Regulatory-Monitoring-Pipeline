@@ -8,7 +8,7 @@ from urllib.parse import urlparse
 
 import httpx
 from tenacity import (
-    retry,
+    AsyncRetrying,
     retry_if_exception_type,
     stop_after_attempt,
     wait_exponential_jitter,
@@ -89,6 +89,16 @@ class AsyncFetcher:
         # Per-host conditional headers cache (in-memory, no persistence in Phase 2)
         self._conditional_cache: dict[str, _ConditionalHeaders] = {}
 
+        # Create retryer with configurable params
+        self._retryer = AsyncRetrying(
+            wait=wait_exponential_jitter(initial=retry_base_delay, max=retry_max_delay),
+            stop=stop_after_attempt(max_retries),
+            retry=retry_if_exception_type(
+                (httpx.RequestError, httpx.TimeoutException, httpx.HTTPStatusError),
+            ),
+            reraise=True,
+        )
+
     async def __aenter__(self) -> AsyncFetcher:
         return self
 
@@ -113,14 +123,6 @@ class AsyncFetcher:
     def _make_conditional_headers(self, host: str) -> dict[str, str]:
         return self._get_conditional_headers(host).to_headers()
 
-    @retry(
-        wait=wait_exponential_jitter(initial=1, max=30),
-        stop=stop_after_attempt(3),
-        retry=retry_if_exception_type(
-            (httpx.RequestError, httpx.TimeoutException, httpx.HTTPStatusError),
-        ),
-        reraise=True,
-    )
     async def _fetch_with_retry(
         self,
         url: str,
@@ -128,7 +130,15 @@ class AsyncFetcher:
         headers: dict[str, str] | None = None,
     ) -> httpx.Response:
         """Internal fetch with retry logic."""
-        return await self._client.get(url, headers=headers)
+
+        async def _do_fetch() -> httpx.Response:
+            resp = await self._client.get(url, headers=headers)
+            # Raise on 4xx/5xx to trigger retries, but NOT on 304
+            if resp.status_code >= 400:
+                resp.raise_for_status()
+            return resp
+
+        return await self._retryer(_do_fetch)
 
     async def fetch(
         self,

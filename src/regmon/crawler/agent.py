@@ -68,6 +68,7 @@ class CrawlerAgent:
         self._max_concurrent_fetches = max_concurrent_fetches
         self._source_registry = get_source_registry()
         self._owns_fetcher = fetcher is None
+        self._stats: list[CrawlerStats] = []
 
     async def __aenter__(self) -> CrawlerAgent:
         if self._fetcher is None:
@@ -192,8 +193,14 @@ class CrawlerAgent:
                 stats.errors,
                 stats.duration_seconds,
             )
+            # Store stats for retrieval
+            self._stats.append(stats)
             # Yield final stats for this source
             yield None, stats
+
+    def get_stats(self) -> list[CrawlerStats]:
+        """Return collected crawl stats."""
+        return list(self._stats)
 
     async def crawl_source(self, source_id: str) -> AsyncIterator[RawDocument]:
         """Crawl a single source by ID, yielding only RawDocuments."""
