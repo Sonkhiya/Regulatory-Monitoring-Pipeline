@@ -1,0 +1,136 @@
+---
+# Jurisdiction-specific regex patterns for metadata extraction
+# Loaded by MetadataExtractor at initialization
+
+RBI:
+  date_patterns:
+    - pattern: "(\\d{1,2}\\s+[A-Za-z]{3}\\s+\\d{4})"
+      format: "%d %b %Y"
+      flags: 0
+    - pattern: "(\\d{2}/\\d{2}/\\d{4})"
+      format: "%d/%m/%Y"
+      flags: 0
+    - pattern: "(\\d{4}-\\d{2}-\\d{2})"
+      format: "%Y-%m-%d"
+      flags: 0
+  reference_patterns:
+    - pattern: "(RBI/\\d{4}-\\d{2}/[A-Z]+/\\d+)"
+      flags: 0
+    - pattern: "(DBR\\.\\w+\\.No\\.\\d+/\\d+\\.\\d+\\.\\d+/\\d{4}-\\d{2})"
+      flags: 0
+    - pattern: "(RBI/[A-Z]+/\\d{4}-\\d{2}/\\d+)"
+      flags: 0
+    - pattern: "(\\b[A-Z]{2,4}\\.\\w+\\.No\\.\\d+/\\d{4}-\\d{2})"
+      flags: 0
+  document_type_patterns:
+    NOTIFICATION:
+      - "notification"
+      - "circular"
+      - "direction"
+      - "master direction"
+      - "master circular"
+    PRESS_RELEASE:
+      - "press release"
+      - "pressrelease"
+      - "press statement"
+  dateparser_settings:
+    DEFAULT_LANGUAGES: ["en"]
+    DATE_ORDER: "DMY"
+
+SEBI:
+  date_patterns:
+    - pattern: "(\\d{1,2}\\s+[A-Za-z]{3}\\s+\\d{4})"
+      format: "%d %b %Y"
+      flags: 0
+    - pattern: "(\\d{2}/\\d{2}/\\d{4})"
+      format: "%m/%d/%Y"
+      flags: 0
+    - pattern: "(\\d{4}-\\d{2}-\\d{2})"
+      format: "%Y-%m-%d"
+      flags: 0
+  reference_patterns:
+    - pattern: "(SEBI/HO/\\w+/\\d+/CIR/\\d{4}/\\d+)"
+      flags: 0
+    - pattern: "(SEBI/LAD-NRO/GN/\\d{4}/\\d+)"
+      flags: 0
+    - pattern: "(SEBI/CIR/\\w+/\\d+)"
+      flags: 0
+  document_type_patterns:
+    CIRCULAR:
+      - "circular"
+      - "guidelines"
+      - "directions"
+  dateparser_settings:
+    DEFAULT_LANGUAGES: ["en"]
+    DATE_ORDER: "DMY"
+
+FDA:
+  date_patterns:
+    - pattern: "(\\d{1,2}\\s+[A-Za-z]{3}\\s+\\d{4})"
+      format: "%d %b %Y"
+      flags: 0
+    - pattern: "(\\d{2}/\\d{2}/\\d{4})"
+      format: "%m/%d/%Y"
+      flags: 0
+    - pattern: "(\\w+\\s+\\d{1,2},\\s+\\d{4})"
+      format: "%B %d, %Y"
+      flags: 0
+  reference_patterns:
+    - pattern: "(\\d+\\s+FR\\s+\\d{5})"
+      flags: 0
+    - pattern: "(FR\\s+Doc\\.\\s+\\d{4}-\\d{5})"
+      flags: 0
+    - pattern: "(RIN\\s+\\d{4}-\\w{2,4})"
+      flags: 0
+    - pattern: "(Docket\\s+No\\.\\s+[A-Z0-9\\-]+)"
+      flags: 0
+  document_type_patterns:
+    REGULATION:
+      - "federal register"
+      - "final rule"
+      - "proposed rule"
+      - "notice of proposed rulemaking"
+      - "fr doc"
+    RSS_ITEM:
+      - "press release"
+      - "press announcement"
+      - "safety communication"
+      - "drug safety"
+      - "recall"
+  dateparser_settings:
+    DEFAULT_LANGUAGES: ["en"]
+    DATE_ORDER: "MDY"
+
+EU_AI_ACT:
+  date_patterns:
+    - pattern: "(\\d{4}-\\d{2}-\\d{2})"
+      format: "%Y-%m-%d"
+      flags: 0
+    - pattern: "(\\d{1,2}\\s+[A-Za-z]+\\s+\\d{4})"
+      format: "%d %B %Y"
+      flags: 0
+  reference_patterns:
+    - pattern: "(Article\\s+\\d+[A-Z]?)"
+      flags: 2
+    - pattern: "(Annex\\s+[IVXLC]+)"
+      flags: 2
+    - pattern: "(Recital\\s+\\d+)"
+      flags: 2
+    - pattern: "(Chapter\\s+[IVXLC]+)"
+      flags: 2
+  document_type_patterns:
+    REGULATION:
+      - "article"
+      - "annex"
+      - "recital"
+      - "chapter"
+      - "regulation"
+      - "directive"
+    NEWS:
+      - "news"
+      - "press release"
+      - "statement"
+      - "speech"
+  dateparser_settings:
+    DEFAULT_LANGUAGES: ["en"]
+    DATE_ORDER: "DMY"

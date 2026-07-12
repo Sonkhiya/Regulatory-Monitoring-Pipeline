@@ -17,6 +17,8 @@ from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker
 
 from regmon.config import Settings
 from regmon.db.engine import create_async_engine, init_db, session_factory
+from regmon.models import RawDocument
+from regmon.parser import ParserAgent
 
 MEMORY_URL = "sqlite+aiosqlite:///:memory:"
 
@@ -242,3 +244,70 @@ def mock_transport(recorded_responses: dict[str, bytes]):
         return httpx.Response(200, content=content, headers=headers)
 
     return httpx.MockTransport(_handler)
+
+
+# ---- Phase 2b: Parser fixtures ----
+
+
+@pytest.fixture
+def parser_agent() -> ParserAgent:
+    """ParserAgent instance for testing."""
+    return ParserAgent()
+
+
+@pytest_asyncio.fixture
+async def sample_raw_documents() -> list[RawDocument]:
+    """Sample RawDocument objects for parser testing."""
+    from datetime import datetime
+
+    return [
+        RawDocument(
+            url="https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12345",
+            content_bytes=b"<html><body><h1>RBI Notification</h1><p>Test content</p></body></html>",
+            headers={"Content-Type": "text/html; charset=utf-8"},
+            fetched_at=datetime(2024, 1, 15, 12, 0, 0),
+            source_name="rbi_notifications",
+        ),
+        RawDocument(
+            url="https://www.sebi.gov.in/legal/circulars/jan-2024/circular-1.html",
+            content_bytes=b"<html><body><h1>SEBI Circular</h1><p>Test content</p></body></html>",
+            headers={"Content-Type": "text/html; charset=utf-8"},
+            fetched_at=datetime(2024, 1, 15, 12, 0, 0),
+            source_name="sebi_circulars",
+        ),
+        RawDocument(
+            url="https://www.fda.gov/news-events/press-announcements/test",
+            content_bytes=(
+                b"<html><body><h1>FDA Press Release</h1><p>Test content</p></body></html>"
+            ),
+            headers={"Content-Type": "text/html; charset=utf-8"},
+            fetched_at=datetime(2024, 1, 15, 12, 0, 0),
+            source_name="fda_press_releases",
+        ),
+    ]
+
+
+@pytest.fixture
+def parser_fixtures() -> dict[str, bytes]:
+    """Load all parser test fixtures into a URL -> content mapping."""
+    from pathlib import Path
+
+    fixtures = {}
+    fixtures_dir = Path(__file__).parent / "fixtures" / "parser"
+
+    # Map fixture files to test URLs
+    fixture_mapping = {
+        "rbi_notification.html": "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12345",
+        "sebi_circular.html": "https://www.sebi.gov.in/legal/circulars/jan-2024/circular-1.html",
+        "fda_press_release.html": "https://www.fda.gov/news-events/press-announcements/test",
+        "eu_ai_act_article.html": "https://artificial-intelligence-act.com/news/article-1.html",
+        "sample.pdf": "https://example.com/sample.pdf",
+        "scanned.pdf": "https://example.com/scanned.pdf",
+    }
+
+    for filename, url in fixture_mapping.items():
+        path = fixtures_dir / filename
+        if path.exists():
+            fixtures[url] = path.read_bytes()
+
+    return fixtures
