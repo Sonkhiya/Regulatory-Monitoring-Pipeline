@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+    <title>FDA Press Releases</title>
+    <link>https://www.fda.gov/about-fda/fda-press-releases/press-releases-rss</link>
+    <description>Latest FDA Press Releases</description>
+    <language>en-us</language>
+    <item>
+        <title>FDA Approves New Treatment for Alzheimer's Disease</title>
+        <link>https://www.fda.gov/news-events/press-announcements/fda-approves-new-treatment-alzheimers-disease</link>
+        <description>Today, the U.S. Food and Drug Administration approved a new treatment for Alzheimer's disease...</description>
+        <pubDate>Mon, 15 Jan 2024 14:30:00 GMT</pubDate>
+        <guid isPermalink="true">https://www.fda.gov/news-events/press-announcements/fda-approves-new-treatment-alzheimers-disease</guid>
+    </item>
+    <item>
+        <title>FDA Issues Warning Letter to Medical Device Company</title>
+        <link>https://www.fda.gov/news-events/press-announcements/fda-issues-warning-letter-medical-device-company</link>
+        <description>The U.S. Food and Drug Administration issued a warning letter to a medical device manufacturer...</description>
+        <pubDate>Fri, 12 Jan 2024 10:00:00 GMT</pubDate>
+        <guid isPermalink="true">https://www.fda.gov/news-events/press-announcements/fda-issues-warning-letter-medical-device-company</guid>
+    </item>
+    <item>
+        <title>FDA Updates Guidance on Clinical Trial Diversity</title>
+        <link>https://www.fda.gov/news-events/press-announcements/fda-updates-guidance-clinical-trial-diversity</link>
+        <description>The U.S. Food and Drug Administration today released updated guidance on diversity in clinical trials...</description>
+        <pubDate>Wed, 10 Jan 2024 09:00:00 GMT</pubDate>
+        <guid isPermalink="true">https://www.fda.gov/news-events/press-announcements/fda-updates-guidance-clinical-trial-diversity</guid>
+    </item>
+</channel>
+</rss>

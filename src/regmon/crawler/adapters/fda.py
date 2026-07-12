@@ -47,8 +47,14 @@ class FDAAdapter(BaseAdapter):
         """Parse FDA press releases RSS feed."""
         import asyncio
 
+        # Fetch RSS content via our fetcher (which uses mock transport in tests)
+        result = await self.fetcher.fetch(feed_url)
+        if not result.is_success or not result.content:
+            return
+
+        # Parse in executor to avoid blocking
         loop = asyncio.get_event_loop()
-        feed = await loop.run_in_executor(None, feedparser.parse, feed_url)
+        feed = await loop.run_in_executor(None, feedparser.parse, result.content)
 
         for item in feed.entries[:max_items]:
             title = item.get("title", "")
@@ -76,20 +82,12 @@ class FDAAdapter(BaseAdapter):
         self, api_url: str, max_items: int
     ) -> AsyncIterator[RemoteEntry]:
         """Parse Federal Register JSON API for FDA rules."""
-        # Build API URL with params
-        base_url = api_url.split("?")[0] if "?" in api_url else api_url
-        fetch_url = (
-            f"{base_url}?"
-            f"conditions%5Bpublication_date%5D%5Bgte%5D="
-            f"{datetime.now().strftime('%Y-%m-%d')}"
-            f"&conditions%5Bagencies%5D%5B%5D=food-and-drug-administration"
-            f"&order=newest&per_page={max_items}"
-        )
+        # Use the provided API URL directly (it should include all query params)
+        result = await self.fetcher._client.get(api_url)
+        if result.status_code != 200:
+            return
 
-        async with self.fetcher._client.stream("GET", fetch_url) as resp:
-            if resp.status_code != 200:
-                return
-            data = await resp.json()
+        data = result.json()
 
         for item in data.get("results", [])[:max_items]:
             title = item.get("title", "")

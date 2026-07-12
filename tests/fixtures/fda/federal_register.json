@@ -1,0 +1,45 @@
+{
+  "results": [
+    {
+      "title": "Food and Drug Administration; Guidance for Industry: Clinical Trial Diversity",
+      "html_url": "https://www.federalregister.gov/documents/2024/01/15/2024-00123/food-and-drug-administration-guidance-for-industry-clinical-trial-diversity",
+      "pdf_url": "https://www.federalregister.gov/documents/2024/01/15/2024-00123/food-and-drug-administration-guidance-for-industry-clinical-trial-diversity.pdf",
+      "publication_date": "2024-01-15",
+      "type": "Notice",
+      "document_number": "2024-00123",
+      "citation": "89 FR 2345",
+      "abstract": "This guidance provides recommendations to sponsors of clinical trials on how to increase enrollment of underrepresented populations...",
+      "agencies": [
+        {"name": "Food and Drug Administration", "slug": "food-and-drug-administration"}
+      ]
+    },
+    {
+      "title": "Food and Drug Administration; Rule: Medical Device Classification",
+      "html_url": "https://www.federalregister.gov/documents/2024/01/12/2024-00122/food-and-drug-administration-rule-medical-device-classification",
+      "pdf_url": "https://www.federalregister.gov/documents/2024/01/12/2024-00122/food-and-drug-administration-rule-medical-device-classification.pdf",
+      "publication_date": "2024-01-12",
+      "type": "Rule",
+      "document_number": "2024-00122",
+      "citation": "89 FR 2100",
+      "abstract": "The Food and Drug Administration is classifying a new medical device...",
+      "agencies": [
+        {"name": "Food and Drug Administration", "slug": "food-and-drug-administration"}
+      ]
+    },
+    {
+      "title": "Food and Drug Administration; Proposed Rule: Food Traceability",
+      "html_url": "https://www.federalregister.gov/documents/2024/01/10/2024-00121/food-and-drug-administration-proposed-rule-food-traceability",
+      "pdf_url": "https://www.federalregister.gov/documents/2024/01/10/2024-00121/food-and-drug-administration-proposed-rule-food-traceability.pdf",
+      "publication_date": "2024-01-10",
+      "type": "Proposed Rule",
+      "document_number": "2024-00121",
+      "citation": "89 FR 1890",
+      "abstract": "The Food and Drug Administration is proposing a rule to establish traceability requirements...",
+      "agencies": [
+        {"name": "Food and Drug Administration", "slug": "food-and-drug-administration"}
+      ]
+    }
+  ],
+  "count": 3,
+  "next_page": null
+}
