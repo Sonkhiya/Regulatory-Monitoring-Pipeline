@@ -18,6 +18,8 @@ from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker
 from regmon.config import Settings
 from regmon.db.engine import create_async_engine, init_db, session_factory
 from regmon.models import RawDocument
+from regmon.models.documents import ParsedDocument
+from regmon.normalize import NormalizerAgent
 from regmon.parser import ParserAgent
 
 MEMORY_URL = "sqlite+aiosqlite:///:memory:"
@@ -311,3 +313,73 @@ def parser_fixtures() -> dict[str, bytes]:
             fixtures[url] = path.read_bytes()
 
     return fixtures
+
+
+# ---- Phase 2b: Normalizer fixtures ----
+
+
+@pytest.fixture
+def normalizer_agent() -> NormalizerAgent:
+    """NormalizerAgent instance for testing."""
+    return NormalizerAgent()
+
+
+@pytest.fixture
+def sample_parsed_documents() -> list[ParsedDocument]:
+    """Sample ParsedDocument objects for normalizer testing."""
+    from datetime import datetime
+
+    return [
+        ParsedDocument(
+            doc_id="doc1",
+            url="https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12345",
+            title="RBI Notification",
+            body_text=(
+                "The Reserve Bank of India has issued a notification regarding "
+                "updated KYC norms for all scheduled commercial banks. Key changes "
+                "include enhanced due diligence for high-risk customers and "
+                "mandatory Aadhaar verification."
+            ),
+            published_date=datetime(2024, 1, 15, 12, 0, 0),
+            reference_number="RBI/2024-25/DBR.AML.BC.No.23/14.01.001/2024-25",
+            document_type=None,
+            lang=None,
+        ),
+        ParsedDocument(
+            doc_id="doc2",
+            url="https://www.sebi.gov.in/legal/circulars/jan-2024/circular-1.html",
+            title="SEBI Circular",
+            body_text=(
+                "SEBI has issued a circular regarding margin requirements for "
+                "derivatives trading. The circular specifies new margin computation "
+                "methodology for equity and commodity derivatives."
+            ),
+            published_date=datetime(2024, 1, 10, 12, 0, 0),
+            reference_number="SEBI/HO/MRD/MRD-PoD-1/P/CIR/2024/15",
+            document_type=None,
+            lang=None,
+        ),
+        ParsedDocument(
+            doc_id="doc3",
+            url="https://www.fda.gov/news-events/press-announcements/test",
+            title="FDA Press Release",
+            body_text=(
+                "FDA has approved a new treatment for Alzheimer's disease. "
+                "This is a significant advancement in the treatment of this condition."
+            ),
+            published_date=datetime(2024, 1, 12, 12, 0, 0),
+            reference_number=None,
+            document_type=None,
+            lang=None,
+        ),
+        ParsedDocument(
+            doc_id="doc4",
+            url="https://example.com/mojibake",
+            title="Mojibake Test",
+            body_text='The bank said "We will comply" and the cost is â€œ100â€.',
+            published_date=None,
+            reference_number=None,
+            document_type=None,
+            lang=None,
+        ),
+    ]

@@ -36,6 +36,7 @@ dependencies = [
   "pypdf>=4.0",
   "dateparser>=1.2",
   "ftfy>=6.1",
+  "lingua-language-detector>=2.0",
 ]
 
 [project.optional-dependencies]
