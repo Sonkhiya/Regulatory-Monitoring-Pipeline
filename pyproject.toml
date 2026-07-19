@@ -36,6 +36,8 @@ dependencies = [
   "pypdf>=4.0",
   "dateparser>=1.2",
   "ftfy>=6.1",
+  "chardet>=5.0",
+  "lingua-language-detector>=2.0",
 ]
 
 [project.optional-dependencies]
@@ -86,7 +88,7 @@ no_implicit_optional = true
 show_error_codes = true
 
 [[tool.mypy.overrides]]
-module = ["faiss.*", "chromadb.*", "sentence_transformers.*", "openai.*", "ollama.*", "aiosqlite.*", "asyncpg.*", "feedparser.*", "httpx.*", "tenacity.*", "bs4.*", "pypdf.*", "dateparser.*", "ftfy.*"]
+module = ["faiss.*", "chromadb.*", "sentence_transformers.*", "openai.*", "ollama.*", "aiosqlite.*", "asyncpg.*", "feedparser.*", "httpx.*", "tenacity.*", "bs4.*", "pypdf.*", "dateparser.*", "ftfy.*", "chardet.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]

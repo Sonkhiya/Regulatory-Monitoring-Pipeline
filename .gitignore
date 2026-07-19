@@ -47,3 +47,7 @@ coverage.xml
 # OS
 .DS_Store
 Thumbs.db
+
+# Claude Code / caveman plugin artifacts (local tooling, not project)
+/.agents/
+/skills-lock.json
